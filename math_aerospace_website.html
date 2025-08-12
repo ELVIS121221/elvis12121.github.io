@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math, Aprendemos Juntos - Programa de Acompañamiento Matemático</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cobalt-blue: #0066CC;
+            --lime-green: #32CD32;
+            --space-black: #0a0a0a;
+            --white: #ffffff;
+            --light-gray: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--space-black) 0%, #1a1a2e 50%, var(--cobalt-blue) 100%);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Animaciones de estrellas */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--white);
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--lime-green);
+            text-shadow: 0 0 10px var(--lime-green);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--lime-green);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--lime-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Secciones */
+        section {
+            min-height: 100vh;
+            padding: 100px 2rem 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            font-family: 'Times New Roman', serif;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--cobalt-blue), var(--lime-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(50, 205, 50, 0.5);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--lime-green);
+            text-shadow: 0 0 15px var(--lime-green);
+        }
+
+        /* Inicio */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            background: rgba(0, 102, 204, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--lime-green);
+            box-shadow: 0 0 30px rgba(50, 205, 50, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--cobalt-blue), var(--lime-green));
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(50, 205, 50, 0.4);
+        }
+
+        /* Servicios */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: rgba(0, 102, 204, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--lime-green);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(50, 205, 50, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--lime-green);
+        }
+
+        /* Galería */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            background: rgba(50, 205, 50, 0.1);
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--lime-green);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .gallery-item:hover::before {
+            left: 100%;
+        }
+
+        /* Testimonios */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial {
+            background: rgba(0, 102, 204, 0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--lime-green);
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial-author {
+            color: var(--lime-green);
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        /* Formulario de contacto */
+        .contact-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(0, 102, 204, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--lime-green);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--lime-green);
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--cobalt-blue);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--lime-green);
+            box-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+        }
+
+        .captcha {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            border: 1px solid var(--lime-green);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                height: calc(100vh - 70px);
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: right 0.3s ease;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content {
+                padding: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            section {
+                padding: 80px 1rem 30px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Estrellas animadas -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Math ✦ Aprendemos Juntos</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#portafolio">Portafolio</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sección Inicio -->
+    <section id="inicio" class="hero fade-in">
+        <div class="hero-content">
+            <h1>Navegando hacia el Futuro Matemático</h1>
+            <p>Desde las profundidades del espacio educativo, <strong>Math, Aprendemos Juntos</strong> emerge como la constelación que guía a estudiantes de zonas rurales hacia el dominio de las matemáticas, transformando números en herramientas de poder científico y tecnológico.</p>
+            <p>Como astronautas del conocimiento, exploramos juntos las galaxias infinitas de las matemáticas, donde cada ecuación es una estrella que ilumina el camino hacia un futuro próspero y desarrollado.</p>
+            <a href="#servicios" class="cta-button">Iniciar Misión Educativa</a>
+        </div>
+    </section>
+
+    <!-- Sección Servicios -->
+    <section id="servicios" class="fade-in">
+        <h2>Servicios Orbitales de Excelencia</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🚀</div>
+                <h3>Acompañamiento Personalizado</h3>
+                <p>Sesiones virtuales con equipos reducidos de máximo 5 estudiantes por profesor voluntario, garantizando atención individualizada y seguimiento académico especializado mediante nuestros sistemas "Matheo" y "MathReporter".</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌌</div>
+                <h3>Guías Educativas Avanzadas</h3>
+                <p>Material didáctico diseñado específicamente para favorecer el aprendizaje virtual, con metodologías innovadoras que transforman conceptos complejos en experiencias de aprendizaje accesibles y efectivas.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🛰️</div>
+                <h3>Seguimiento Integral</h3>
+                <p>Sistema de monitoreo continuo que mide responsabilidad, participación, competencia académica y calidad de conectividad, manteniendo comunicación constante con padres de familia para optimizar resultados.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⭐</div>
+                <h3>Formación de Voluntarios</h3>
+                <p>Programa completo de capacitación para profesionales jóvenes que desean compartir sus conocimientos, incluyendo cultura organizacional, metodologías de enseñanza y herramientas virtuales avanzadas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Portafolio -->
+    <section id="portafolio" class="fade-in">
+        <h2>Galaxia de Logros Educativos</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <p>Sesión Virtual Arequipa<br>📊 Álgebra Avanzada</p>
+            </div>
+            <div class="gallery-item">
+                <p>Ceremonia Moquegua<br>🏆 Graduación Ciclo 2023</p>
+            </div>
+            <div class="gallery-item">
+                <p>Taller Cusco<br>📐 Geometría Espacial</p>
+            </div>
+            <div class="gallery-item">
+                <p>Capacitación Docentes<br>🎓 118 Voluntarios</p>
+            </div>
+            <div class="gallery-item">
+                <p>Evento Puno<br>🚀 Matemática Aplicada</p>
+            </div>
+            <div class="gallery-item">
+                <p>Reunión Padres<br>👨‍👩‍👧‍👦 Seguimiento Familiar</p>
+            </div>
+            <div class="gallery-item">
+                <p>Clase Interactiva<br>💻 Herramientas Digitales</p>
+            </div>
+            <div class="gallery-item">
+                <p>Evaluación Estudiantes<br>📈 Progreso Académico</p>
+            </div>
+            <div class="gallery-item">
+                <p>Alianza Universitaria<br>🤝 Convenio UNSA</p>
+            </div>
+            <div class="gallery-item">
+                <p>Reconocimiento<br>🌟 Impacto Social 2023</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Testimonios -->
+    <section id="testimonios" class="fade-in">
+        <h2>Voces del Cosmos Educativo</h2>
+        <div class="testimonials">
+            <div class="testimonial">
+                <p>"Math transformó completamente la percepción de mi hija hacia las matemáticas. Desde zonas rurales de Arequipa, ahora ve números como herramientas poderosas para su futuro universitario."</p>
+                <div class="testimonial-author">- María Gonzales, Madre de Familia</div>
+            </div>
+            <div class="testimonial">
+                <p>"Como voluntario, experimenté el poder de compartir conocimiento. Los estudiantes de Moquegua me enseñaron que la educación es un viaje bidireccional hacia el crecimiento mutuo."</p>
+                <div class="testimonial-author">- Carlos Mendoza, Profesor Voluntario</div>
+            </div>
+            <div class="testimonial">
+                <p>"El acompañamiento personalizado y las herramientas digitales innovadoras crearon un ambiente de aprendizaje que nunca imaginé posible desde mi comunidad rural."</p>
+                <div class="testimonial-author">- Ana Quispe, Estudiante de Cusco</div>
+            </div>
+            <div class="testimonial">
+                <p>"Math no solo mejora habilidades matemáticas, desarrolla pensamiento crítico y científico esencial para formar agentes de cambio en nuestra sociedad peruana."</p>
+                <div class="testimonial-author">- Dr. Juliana Bautista, Consejera Académica</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+    <section id="contacto" class="fade-in">
+        <h2>Comunicación Intergaláctica</h2>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="region">Región:</label>
+                <select id="region" name="region" required>
+                    <option value="">Selecciona tu región</option>
+                    <option value="arequipa">Arequipa</option>
+                    <option value="moquegua">Moquegua</option>
+                    <option value="cusco">Cusco</option>
+                    <option value="puno">Puno</option>
+                    <option value="otra">Otra región</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="servicio">Servicio de Interés:</label>
+                <select id="servicio" name="servicio" required>
+                    <option value="">Selecciona un servicio</option>
+                    <option value="acompañamiento">Acompañamiento Matemático</option>
+                    <option value="voluntario">Ser Profesor Voluntario</option>
+                    <option value="alianza">Alianza Institucional</option>
+                    <option value="informacion">Solicitar Información</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+            </div>
+            <div class="captcha">
+                <p>Resuelve: 7 + 5 = ?</p>
+                <input type="number" id="captcha" name="captcha" min="1" max="20" required>
+            </div>
+            <button type="submit" class="cta-button">Enviar Transmisión</button>
+        </form>
+    </section>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/51987654321?text=Hola, estoy interesado en los servicios de Math, Aprendemos Juntos" class="whatsapp-float" target="_blank">
+        💬
+    </a>
+
+    <script>
+        // Generar estrellas
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Menú móvil
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Animaciones al hacer scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Formulario de contacto
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const captcha = document.getElementById('captcha').value;
+            if (parseInt(captcha) !== 12) {
+                alert('Por favor, resuelve correctamente la operación matemática.');
+                return;
+            }
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            console.log('Datos del formulario:', data);
+            alert('¡Gracias por contactarnos! Tu mensaje ha sido enviado exitosamente. Nos comunicaremos contigo pronto para iniciar esta aventura educativa.');
+            
+            this.reset();
+        });
+
+        // Inicializar
+        window.addEventListener('load', () => {
+            createStars();
+            animateOnScroll();
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Efecto paralelo en el hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
